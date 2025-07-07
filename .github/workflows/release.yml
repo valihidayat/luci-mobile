@@ -1,0 +1,120 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.8.1'
+          channel: 'stable'
+      
+      - name: Install dependencies
+        run: flutter pub get
+      
+      - name: Build APK
+        run: flutter build apk --release
+      
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: luci-mobile-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.8.1'
+          channel: 'stable'
+      
+      - name: Install dependencies
+        run: flutter pub get
+      
+      - name: Build iOS
+        run: flutter build ios --release --no-codesign
+      
+      - name: Upload iOS build
+        uses: actions/upload-artifact@v4
+        with:
+          name: luci-mobile-ios
+          path: build/ios/iphoneos/Runner.app
+
+  create-release:
+    needs: [build-android, build-ios]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download APK
+        uses: actions/download-artifact@v4
+        with:
+          name: luci-mobile-apk
+          path: dist/
+      
+      - name: Download iOS build
+        uses: actions/download-artifact@v4
+        with:
+          name: luci-mobile-ios
+          path: dist/
+      
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: LuCI Mobile ${{ github.ref_name }}
+          body: |
+            ## What's New
+            
+            ### Features
+            - Initial release of LuCI Mobile
+            
+            ### Bug Fixes
+            - Various improvements and optimizations
+            
+            ## Downloads
+            
+            ### Android
+            - APK file attached
+            
+            ### iOS
+            - iOS build available for development
+            
+            ## Installation
+            
+            1. Download the APK file
+            2. Enable "Install from unknown sources" on your Android device
+            3. Install the APK
+            4. Configure your router settings
+            
+            ## Requirements
+            
+            - Android 5.0+ (API level 21+)
+            - OpenWrt router with LuCI web interface
+            - Network access to your router
+          
+          draft: false
+          prerelease: false
+      
+      - name: Upload APK
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/app-release.apk
+          asset_name: luci-mobile-v${{ github.ref_name }}.apk
+          asset_content_type: application/vnd.android.package-archive 
