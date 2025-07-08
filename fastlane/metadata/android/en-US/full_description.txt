@@ -1,0 +1,1 @@
+LuCI Mobile is a modern Flutter app for managing OpenWrt/LuCI routers. Monitor interfaces, clients, and system status securely from your mobile device. 

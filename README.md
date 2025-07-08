@@ -2,7 +2,7 @@
 
 A modern Flutter mobile application for managing OpenWrt/LuCI routers remotely. LuCI Mobile provides an intuitive interface to monitor and control your router's network interfaces, connected clients, and system status.
 
-![LuCI Mobile Dashboard](screenshots/dashboard-screen.png)
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/dashboard-screen.png" width="500"/>
 
 ## Features
 
@@ -51,11 +51,11 @@ A modern Flutter mobile application for managing OpenWrt/LuCI routers remotely. 
 
 | Login Screen | Dashboard | Clients | Interfaces |
 |--------------|-----------|---------|------------|
-| <img src="screenshots/login-screen.png" width="200"/> | <img src="screenshots/dashboard-screen.png" width="200"/> | <img src="screenshots/clients-screen.png" width="200"/> | <img src="screenshots/interfaces-screen-wired.png" width="200"/> |
+| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/login-screen.png" width="200"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/dashboard-screen.png" width="200"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/clients-screen.png" width="200"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/interfaces-screen-wired.png" width="200"/> |
 
 ## Prerequisites
 
-- Flutter SDK (version 3.8.1 or higher)
+- Flutter SDK (version 3.32.5 or higher)
 - Dart SDK
 - Android Studio / Xcode (for mobile development)
 - OpenWrt router with LuCI web interface enabled
