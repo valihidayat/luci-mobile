@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../design/luci_design_system.dart';
 
-/// Utility components and formatters for enhanced user experience
-/// Professional components for router selection, status indicators, and data formatting
-class LuciUtilityComponents {
+/// Final polish components for enhanced user experience
+/// Part of Phase 4: Final Polish & Accessibility
+class LuciFinalPolish {
   /// Enhanced Material 3 SegmentedButton for router selection
   static Widget routerSelector({
     required BuildContext context,
