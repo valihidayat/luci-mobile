@@ -66,27 +66,34 @@ class SettingsScreen extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  RadioGroup<ThemeMode>(
-                    groupValue: appState.themeMode,
-                    onChanged: (mode) {
-                      if (mode != null) appState.setThemeMode(mode);
-                    },
-                    child: Column(
-                      children: [
-                        RadioListTile<ThemeMode>(
-                          title: const Text('System Default'),
-                          value: ThemeMode.system,
-                        ),
-                        RadioListTile<ThemeMode>(
-                          title: const Text('Light'),
-                          value: ThemeMode.light,
-                        ),
-                        RadioListTile<ThemeMode>(
-                          title: const Text('Dark'),
-                          value: ThemeMode.dark,
-                        ),
-                      ],
-                    ),
+                  // ✅ FIX RadioGroup jadi RadioListTile langsung
+                  Column(
+                    children: [
+                      RadioListTile<ThemeMode>(
+                        title: const Text('System Default'),
+                        value: ThemeMode.system,
+                        groupValue: appState.themeMode,
+                        onChanged: (mode) {
+                          if (mode != null) appState.setThemeMode(mode);
+                        },
+                      ),
+                      RadioListTile<ThemeMode>(
+                        title: const Text('Light'),
+                        value: ThemeMode.light,
+                        groupValue: appState.themeMode,
+                        onChanged: (mode) {
+                          if (mode != null) appState.setThemeMode(mode);
+                        },
+                      ),
+                      RadioListTile<ThemeMode>(
+                        title: const Text('Dark'),
+                        value: ThemeMode.dark,
+                        groupValue: appState.themeMode,
+                        onChanged: (mode) {
+                          if (mode != null) appState.setThemeMode(mode);
+                        },
+                      ),
+                    ],
                   ),
                   const Divider(height: 32),
                   Padding(
@@ -121,7 +128,9 @@ class SettingsScreen extends ConsumerWidget {
                         'Customize Dashboard',
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
-                      subtitle: const Text('Configure interface visibility and throughput monitoring'),
+                      subtitle: const Text(
+                        'Configure interface visibility and throughput monitoring',
+                      ),
                       trailing: Icon(
                         Icons.arrow_forward_ios,
                         size: 16,
