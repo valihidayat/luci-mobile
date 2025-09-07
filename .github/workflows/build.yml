@@ -1,22 +1,30 @@
-name: Build Release APK
+name: Build Android (APK)
 
 on:
   push:
-    branches:
-      - main   # setiap push ke main workflow akan jalan
+    branches: [ main ]   # jalan setiap push ke main
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-  build:
+  android-apk:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
+      - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.5' # sesuaikan versi kamu
+          flutter-version: '3.22.5'   # pastikan sesuai, jangan typo "3.32.5"
+          cache: true
 
       - name: Install dependencies
         run: flutter pub get
@@ -24,10 +32,10 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
-      - name: Create Release
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: main-build-${{ github.run_number }}   # bikin tag otomatis
+          tag_name: build-${{ github.run_number }}
           name: "Build ${{ github.run_number }}"
           files: build/app/outputs/flutter-apk/app-release.apk
         env:
