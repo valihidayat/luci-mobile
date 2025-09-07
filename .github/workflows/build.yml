@@ -1,9 +1,8 @@
-name: Build Android (APK)
+name: Auto Build Debug APK
 
 on:
   push:
-    branches: [ main ]   # jalan setiap push ke main
-  pull_request:
+    branches: [ main ]   # setiap ada push ke main, workflow jalan
   workflow_dispatch:
 
 jobs:
@@ -23,20 +22,26 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.5'   # pastikan sesuai, jangan typo "3.32.5"
+          flutter-version: '3.32.5'
           cache: true
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build APK
-        run: flutter build apk --release
+      - name: Build Debug APK
+        run: flutter build apk --debug
 
-      - name: Create GitHub Release
+      - name: Upload Debug APK (Artifacts)
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: build/app/outputs/flutter-apk/app-debug.apk
+
+      - name: Auto Release Debug APK
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: build-${{ github.run_number }}
-          name: "Build ${{ github.run_number }}"
-          files: build/app/outputs/flutter-apk/app-release.apk
+          tag_name: auto-debug-${{ github.run_number }}
+          name: "Auto Debug Build #${{ github.run_number }}"
+          files: build/app/outputs/flutter-apk/app-debug.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
